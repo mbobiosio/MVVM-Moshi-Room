@@ -7,7 +7,7 @@
 
         <variable
             name="user"
-            type="com.mbobiosio.dbpractice.model.Follower" />
+            type="com.mbobiosio.dbpractice.model.User" />
 
         <variable
             name="clickListener"

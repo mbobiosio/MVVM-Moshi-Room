@@ -1,7 +1,7 @@
 package com.mbobiosio.dbpractice.api
 
 import com.mbobiosio.dbpractice.model.BaseResponse
-import com.mbobiosio.dbpractice.model.Follower
+import com.mbobiosio.dbpractice.model.User
 import com.mbobiosio.dbpractice.model.Post
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -21,7 +21,8 @@ interface ApiService {
     ): BaseResponse<Post>
 
     @GET("GetFollowersByUserID")
-    suspend fun getFollowers(
-        @Query("UserID") userID: Int?
-    ): List<Follower>
+    suspend fun getUsers(
+        @Query("UserID") userID: Int?,
+        @Query("pageNumber") pageNumber: Int?
+    ): BaseResponse<User>
 }

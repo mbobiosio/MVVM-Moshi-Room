@@ -1,6 +1,6 @@
 package com.mbobiosio.dbpractice.listener
 
-import com.mbobiosio.dbpractice.model.Follower
+import com.mbobiosio.dbpractice.model.User
 
 /*
 * Created by Mbuodile Obiosio on Apr 18, 2021.
@@ -8,5 +8,5 @@ import com.mbobiosio.dbpractice.model.Follower
 * Nigeria
 */
 interface UserListener {
-    fun onItemClicked(user: Follower)
+    fun onItemClicked(user: User)
 }

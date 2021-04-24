@@ -1,13 +1,12 @@
 package com.mbobiosio.dbpractice.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mbobiosio.dbpractice.model.Follower
-import com.mbobiosio.dbpractice.model.Results
-import com.mbobiosio.dbpractice.repo.UserRepository
-import kotlinx.coroutines.launch
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
+import com.mbobiosio.dbpractice.api.RetrofitClient
+import com.mbobiosio.dbpractice.data.UsersDataSource
 
 /*
 * Created by Mbuodile Obiosio on Apr 18, 2021.
@@ -15,19 +14,17 @@ import kotlinx.coroutines.launch
 * Nigeria
 */
 class UserViewModel : ViewModel() {
-    private val userRepository = UserRepository()
+    private val apiService = RetrofitClient.apiService
 
-    private val _users = MutableLiveData<List<Follower>?>()
-    val users: LiveData<List<Follower>?> get() = _users
+    private val dataSource = UsersDataSource (
+        apiService
+    )
 
-    fun getFollowers(userId: Int?) {
-        viewModelScope.launch {
-            when(val result = followers(userId)) {
-                is Results.Success -> _users.postValue(result.value)
-                else -> Results.Error()
-            }
-        }
-    }
+    private val pagingConfig = PagingConfig(
+        pageSize = 10, initialLoadSize = 10, enablePlaceholders = false
+    )
 
-    private suspend fun followers(userId: Int?) = userRepository.getFollowers(userId)
+    val users = Pager(pagingConfig) {
+        dataSource
+    }.flow.cachedIn(viewModelScope)
 }

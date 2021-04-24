@@ -3,12 +3,14 @@ package com.mbobiosio.dbpractice.ui.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import com.mbobiosio.dbpractice.R
 import com.mbobiosio.dbpractice.databinding.ActivityUsersBinding
 import com.mbobiosio.dbpractice.listener.UserListener
-import com.mbobiosio.dbpractice.model.Follower
+import com.mbobiosio.dbpractice.model.User
 import com.mbobiosio.dbpractice.ui.adapter.UserAdapter
 import com.mbobiosio.dbpractice.viewmodel.UserViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class UsersActivity : AppCompatActivity() {
@@ -22,17 +24,18 @@ class UsersActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         setContentView(binding.root)
 
-        viewModel.getFollowers(1)
-
         initRecyclerView()
 
-        viewModel.users.observe(this) {
-            adapter.submitList(it)
+        GlobalScope.launch {
+            viewModel.users.collectLatest {
+                adapter.submitData(it)
+            }
         }
+
     }
     private fun initRecyclerView() {
         adapter = UserAdapter(object : UserListener {
-            override fun onItemClicked(user: Follower) {
+            override fun onItemClicked(user: User) {
                 Timber.d("${user.followerData?.fullName}")
             }
         })

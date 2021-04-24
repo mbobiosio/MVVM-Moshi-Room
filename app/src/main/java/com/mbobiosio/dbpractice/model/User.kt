@@ -7,7 +7,7 @@ import com.squareup.moshi.Json
 * Twitter: @cazewonder
 * Nigeria
 */
-data class Follower(
+data class User(
     @Json(name = "ID")
     var id: Int?,
 
