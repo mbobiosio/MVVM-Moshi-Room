@@ -24,6 +24,7 @@ private fun httpClient(): OkHttpClient {
 
     return OkHttpClient.Builder().apply {
         this.addInterceptor(interceptor)
+            .addInterceptor(RequestInterceptor())
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .retryOnConnectionFailure(true)
